@@ -1,9 +1,9 @@
 // Advent of Code 2016 - Day 1
 //
-// 		The Document indicates that you should start at the given 
-// coordinates (where you just landed) and face North. Then, 
-// follow the provided sequence: either turn left (L) or right 
-// (R) 90 degrees, then walk forward the given number of 
+// 		The Document indicates that you should start at the given
+// coordinates (where you just landed) and face North. Then,
+// follow the provided sequence: either turn left (L) or right
+// (R) 90 degrees, then walk forward the given number of
 // blocks, ending at a new intersection.
 //
 // 		How many blocks away is Easter Bunny HQ?
@@ -13,16 +13,16 @@
 // and to increment with each instruction from the input.
 //
 // Issues: During part two I missintrepreted the instructions
-// to only check for locations after each instruction was 
-// complete rather than after each step. This was fixed by 
+// to only check for locations after each instruction was
+// complete rather than after each step. This was fixed by
 // wrapping the walker in a loop.
 //
-
 
 package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"math"
 	"strconv"
 	"strings"
@@ -94,7 +94,13 @@ func (w *Walker) distance() int {
 
 }
 
-func part_one(input string) int {
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
+func part_one(input string) string {
 
 	commands := strings.Split(input, ", ")
 
@@ -109,11 +115,11 @@ func part_one(input string) int {
 		w.step(distance)
 
 	}
-	return w.distance()
+	return strconv.Itoa(w.distance())
 
 }
 
-func part_two(input string) int {
+func part_two(input string) string {
 
 	commands := strings.Split(input, ", ")
 
@@ -143,15 +149,16 @@ func part_two(input string) int {
 		}
 
 	}
-	return w.distance()
+	return strconv.Itoa(w.distance())
 
 }
 
 func main() {
 
-	const input = "R2, L3, R2, R4, L2, L1, R2, R4, R1, L4, L5, R5, R5, R2, R2, R1, L2, L3, L2, L1, R3, L5, R187, R1, R4, L1, R5, L3, L4, R50, L4, R2, R70, L3, L2, R4, R3, R194, L3, L4, L4, L3, L4, R4, R5, L1, L5, L4, R1, L2, R4, L5, L3, R4, L5, L5, R5, R3, R5, L2, L4, R4, L1, R3, R1, L1, L2, R2, R2, L3, R3, R2, R5, R2, R5, L3, R2, L5, R1, R2, R2, L4, L5, L1, L4, R4, R3, R1, R2, L1, L2, R4, R5, L2, R3, L4, L5, L5, L4, R4, L2, R1, R1, L2, L3, L2, R2, L4, R3, R2, L1, L3, L2, L4, L4, R2, L3, L3, R2, L4, L3, R4, R3, L2, L1, L4, R4, R2, L4, L4, L5, L1, R2, L5, L2, L3, R2, L2"
+	input, err := ioutil.ReadFile("./2016_01.txt")
+	check(err)
 
-	fmt.Println("Problem 1: " + strconv.Itoa(part_one(input)))
-	fmt.Println("Problem 2: " + strconv.Itoa(part_two(input)))
+	fmt.Println("Problem 1: " + part_one(string(input)))
+	fmt.Println("Problem 2: " + part_two(string(input)))
 
 }

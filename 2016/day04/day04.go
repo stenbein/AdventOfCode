@@ -13,7 +13,7 @@
 // 		Approach taken was to itterate through the given data 
 // generating 
 // 
-// Issues: Forgot to trim final value of checksum which left
+// 		Issues: Forgot to trim final value of checksum which left
 // "]" as a validation character. In the second part I had
 // an error with my ROTx where the modulo was in the wrong 
 // place.
@@ -59,12 +59,11 @@ func (p PairList) Swap(i, j int){ p[i], p[j] = p[j], p[i] }
 func (c *RoomCode) isValid() bool {
 
 	//take a map of the frequencies
+	//todo, try this without a map after 2016 is done
 	counts := make(map[string]int)
 
 	for _, char := range c.code {
-
 		counts[string(char)] += 1
-
 	}
 
 	//sort the map as a slice by values
@@ -78,11 +77,9 @@ func (c *RoomCode) isValid() bool {
 
 	//check the result list against the checksum
 	for i, char := range c.checksum {
-
 		if countList[i].Key != string(char) {
 			return false
 		}
-
 	}
 
 	return true
@@ -92,7 +89,7 @@ func (c *RoomCode) isValid() bool {
 func (c *RoomCode) decode() string {
 
 	id, _ := strconv.Atoi(c.id)
-	shift := id % 26
+	shift := id
 
 	rotx := func(r rune) rune {
 		switch {
@@ -108,19 +105,18 @@ func (c *RoomCode) decode() string {
 
 }
 
-func newCode(code string) RoomCode {
+func newCode(raw string) RoomCode {
 
-	//sl[len(sl)-1]
-	codeParts := strings.Split(code, "-")
+	parts := strings.Split(raw, "-")
 
-	characters := codeParts[:len(codeParts)-1]
-	sectorID := strings.Split(codeParts[len(codeParts)-1], "[")[0]
-	checksum := strings.Split(codeParts[len(codeParts)-1], "[")[1]
+	code := parts[:len(parts)-1]
+	ID := strings.Split(parts[len(parts)-1], "[")[0]
+	checksum := strings.Split(parts[len(parts)-1], "[")[1]
 
 	//trim off the final character of the checksum
 	checksum = checksum[:len(checksum)-1]
 
-	return RoomCode{strings.Join(characters,""), sectorID, checksum}
+	return RoomCode{strings.Join(code,""), ID, checksum}
 
 }
 
@@ -135,8 +131,8 @@ func part_one(input string) string {
 
 	total := 0
 
-    dataset := strings.Split(input, "\n")
-    for _, code := range dataset {
+    codes := strings.Split(input, "\n")
+    for _, code := range codes {
 
     	if code != "" {
 
@@ -156,27 +152,33 @@ func part_one(input string) string {
 
 func part_two(input string) string {
 
-	validCodes := make([]RoomCode, 0)
-    dataset := strings.Split(input, "\n")
-    for _, code := range dataset {
+	valid := make([]RoomCode, 0)
+
+    raws := strings.Split(input, "\n")
+    for _, code := range raws {
 
     	if code != "" {
 
     		c := newCode(code)
     		
-    		validCodes = append(validCodes, c)    		
+    		//todo - same with the map above
+    		//try this without append
+    		valid = append(valid, c)	
 
     	}
 
     }
 
-    for _, c := range validCodes {
+    //because I split on the hypens earlier 
+    //this doesn't have spaces. I peaked at the
+    //format by taking a dump during testing
+    for _, c := range valid {
 
     	if c.decode() == "northpoleobjectstorage" {
     		return c.id
     	}
-
     }
+
 
     return "Not found"
 
@@ -184,7 +186,7 @@ func part_two(input string) string {
 
 func main() {
 
-	input, err := ioutil.ReadFile("/home/mark/AdventOfCode/2016/Inputs/2016_04.txt")
+	input, err := ioutil.ReadFile("./2016_04.txt")
     check(err)
 
 	fmt.Println("Problem 1: " + part_one(string(input)))
