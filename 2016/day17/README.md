@@ -3,13 +3,13 @@ You're trying to access a secure vault protected by a 4x4 grid of small rooms co
 
 #########
 #S| | | #
-/#-/#-/#-/#-/#
-/# | | | /#
-/#-/#-/#-/#-/#
-/# | | | /#
-/#-/#-/#-/#-/#
-/# | | |  
-/#/#/#/#/#/#/# V
+#-#-#-#-#
+# | | | #
+#-#-#-#-#
+# | | | #
+#-#-#-#-#
+# | | |  
+####### V
 Fixed walls are marked with #, and doors are marked with - or |.
 
 The doors in your current room are either open or closed (and locked) based on the hexadecimal MD5 hash of a passcode (your puzzle input) followed by a sequence of uppercase characters representing the path you have taken so far (U for up, D for down, L for left, and R for right).
