@@ -1,8 +1,8 @@
-##--- Day 17: Two Steps Forward ---
+## --- Day 17: Two Steps Forward ---
 You're trying to access a secure vault protected by a 4x4 grid of small rooms connected by doors. You start in the top-left room (marked S), and you can access the vault (marked V) once you reach the bottom-right room:
 
-/#/#/#/#/#/#/#/#/#
-/#S| | | /#
+#########
+#S| | | #
 /#-/#-/#-/#-/#
 /# | | | /#
 /#-/#-/#-/#-/#
@@ -33,7 +33,7 @@ Given your vault's passcode, what is the shortest path (the actual path, not jus
 
 Your puzzle answer was DURLDRRDRD.
 
-###--- Part Two ---
+### --- Part Two ---
 You're curious how robust this security solution really is, and so you decide to find longer and longer paths which still provide access to the vault. You remember that paths always end the first time they reach the bottom-right room (that is, they can never pass through it, only end in it).
 
 For example:
