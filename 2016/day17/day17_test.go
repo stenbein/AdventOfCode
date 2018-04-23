@@ -1,18 +1,8 @@
 package main
 
 import (
-	//"fmt"
 	"testing"
 )
-
-//https://stackoverflow.com/questions/1760757/how-to-efficiently-concatenate-strings-in-go
-
-//simple method to print out the grid
-/*func (g *grid) rep() {
-	for _, row := range g.tiles {
-		fmt.Println(row)
-	}
-}*/
 
 //check the value of the boolean slice for the doors
 func ensureDoors(t *testing.T, r *room, expectValue [4]bool) {
