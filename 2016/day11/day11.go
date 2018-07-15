@@ -1,8 +1,12 @@
 // Advent of Code 2016 - Day 11
 //
-//      Approach taken was
+// 		The idea here is to generate a list of possible transitions
+// to new states for each state and to record at each transition 
+// how much time it took to get there. My biggest issue was figuring
+// how to generate the state keys.
 //
-//      Issues:
+// 		Issues: No major issues. But left this one behind while I 
+// did some other things and fell off the wagon.
 //
 //
 
