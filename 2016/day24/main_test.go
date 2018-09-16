@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-    "strconv"
-    "io/ioutil"
+	"io/ioutil"
+	"strconv"
 	"testing"
 )
 
@@ -15,7 +15,6 @@ func ensureFind(t *testing.T, g *grid, id, expectx, expecty int) {
 	}
 
 }
-
 
 func TestFindID(t *testing.T) {
 

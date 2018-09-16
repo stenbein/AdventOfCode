@@ -1,21 +1,21 @@
 // Advent of Code 2016 - Day 4
-//		
-//		Each room consists of an encrypted name (lowercase 
-// letters separated by dashes) followed by a dash, a sector 
+//
+//		Each room consists of an encrypted name (lowercase
+// letters separated by dashes) followed by a dash, a sector
 // ID, and a checksum in square brackets.
 //
-//		A room is real (not a decoy) if the checksum is the 
-// five most common letters in the encrypted name, in order, 
+//		A room is real (not a decoy) if the checksum is the
+// five most common letters in the encrypted name, in order,
 // with ties broken by alphabetization.
 //
 //		What is the sum of the sector IDs of the real rooms?
 //
-// 		Approach taken was to itterate through the given data 
-// generating 
-// 
+// 		Approach taken was to itterate through the given data
+// generating
+//
 // 		Issues: Forgot to trim final value of checksum which left
 // "]" as a validation character. In the second part I had
-// an error with my ROTx where the modulo was in the wrong 
+// an error with my ROTx where the modulo was in the wrong
 // place.
 //
 //
@@ -24,37 +24,35 @@ package main
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 	"io/ioutil"
 	"sort"
+	"strconv"
+	"strings"
 )
 
 type RoomCode struct {
-
-	code 		string
-	id 			string
-	checksum	string
-
+	code     string
+	id       string
+	checksum string
 }
 
 type Pair struct {
-  Key string
-  Value int
+	Key   string
+	Value int
 }
 
 type PairList []Pair
 
 func (p PairList) Len() int { return len(p) }
-func (p PairList) Less(i, j int) bool { 
-	
+func (p PairList) Less(i, j int) bool {
+
 	if p[i].Value == p[j].Value {
 		return p[i].Key > p[j].Key
 	}
 	return p[i].Value < p[j].Value
 
 }
-func (p PairList) Swap(i, j int){ p[i], p[j] = p[j], p[i] }
+func (p PairList) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
 
 func (c *RoomCode) isValid() bool {
 
@@ -116,37 +114,36 @@ func newCode(raw string) RoomCode {
 	//trim off the final character of the checksum
 	checksum = checksum[:len(checksum)-1]
 
-	return RoomCode{strings.Join(code,""), ID, checksum}
+	return RoomCode{strings.Join(code, ""), ID, checksum}
 
 }
 
-
 func check(e error) {
-    if e != nil {
-        panic(e)
-    }
+	if e != nil {
+		panic(e)
+	}
 }
 
 func part_one(input string) string {
 
 	total := 0
 
-    codes := strings.Split(input, "\n")
-    for _, code := range codes {
+	codes := strings.Split(input, "\n")
+	for _, code := range codes {
 
-    	if code != "" {
+		if code != "" {
 
-    		c := newCode(code)
-    		if c.isValid() {
-    			id, _ := strconv.Atoi(c.id)
-    			total += id
-    		}
+			c := newCode(code)
+			if c.isValid() {
+				id, _ := strconv.Atoi(c.id)
+				total += id
+			}
 
-    	}
+		}
 
-    }
+	}
 
-    return strconv.Itoa(total)
+	return strconv.Itoa(total)
 
 }
 
@@ -154,40 +151,39 @@ func part_two(input string) string {
 
 	valid := make([]RoomCode, 0)
 
-    raws := strings.Split(input, "\n")
-    for _, code := range raws {
+	raws := strings.Split(input, "\n")
+	for _, code := range raws {
 
-    	if code != "" {
+		if code != "" {
 
-    		c := newCode(code)
-    		
-    		//todo - same with the map above
-    		//try this without append
-    		valid = append(valid, c)	
+			c := newCode(code)
 
-    	}
+			//todo - same with the map above
+			//try this without append
+			valid = append(valid, c)
 
-    }
+		}
 
-    //because I split on the hypens earlier 
-    //this doesn't have spaces. I peaked at the
-    //format by taking a dump during testing
-    for _, c := range valid {
+	}
 
-    	if c.decode() == "northpoleobjectstorage" {
-    		return c.id
-    	}
-    }
+	//because I split on the hypens earlier
+	//this doesn't have spaces. I peaked at the
+	//format by taking a dump during testing
+	for _, c := range valid {
 
+		if c.decode() == "northpoleobjectstorage" {
+			return c.id
+		}
+	}
 
-    return "Not found"
+	return "Not found"
 
 }
 
 func main() {
 
 	input, err := ioutil.ReadFile("./2016_04.txt")
-    check(err)
+	check(err)
 
 	fmt.Println("Problem 1: " + part_one(string(input)))
 	fmt.Println("Problem 2: " + part_two(string(input)))

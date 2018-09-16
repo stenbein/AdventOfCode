@@ -33,7 +33,7 @@ type registerMachine struct {
 	c int            //counter
 	r map[string]int //registers
 	p []instruction  //the program
-	o []int			 //the output to test for day 25
+	o []int          //the output to test for day 25
 
 }
 
@@ -162,13 +162,13 @@ func check(e error) {
 
 func checkOut(o []int) bool {
 
-	for i := 0; i < len(o) - 1; i++ {
+	for i := 0; i < len(o)-1; i++ {
 		if o[i] == o[i+1] {
 			return false
 		}
 	}
 	return true
-	
+
 }
 
 func part_one(input string) string {
@@ -180,24 +180,24 @@ func part_one(input string) string {
 			program = append(program, instruction{tokens[0], tokens[1:]})
 		}
 	}
-	
+
 	i := 0
 	for {
-	
+
 		rm := NewMachine(program)
 		rm.r["a"] = i //special input for this problem
 
 		rm.run()
-		
+
 		if checkOut(rm.o) {
 			fmt.Println(i, rm.o)
 			break
 		}
-		
+
 		i++
-		
+
 	}
-	
+
 	return "Program Complete."
 
 }
@@ -205,7 +205,7 @@ func part_one(input string) string {
 //no part 2 for day 25
 /*func part_two(input string) string {
 
-	
+
 
 }*/
 

@@ -11,8 +11,8 @@ package main
 import (
 	"crypto/md5"
 	"fmt"
-	"time"
 	"strconv"
+	"time"
 )
 
 /*Only the first four characters of the hash are used;
@@ -127,7 +127,7 @@ func part_two(input string) string {
 	queue = make(chan room, 500)
 	queue <- room{0, input}
 
-	loop:
+loop:
 	for {
 
 		select {
@@ -150,7 +150,7 @@ func part_two(input string) string {
 
 			}
 
-		case <-time.After(1*time.Second):
+		case <-time.After(1 * time.Second):
 			break loop
 		}
 

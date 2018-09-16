@@ -3,7 +3,7 @@
 // 		Approach taken was to treat the row of tiles as
 // booleans and to pass the upper row as slices to determine
 // the next row down. Since the pattern was so simple I didn't
-// see a need to 
+// see a need to
 //
 // 		Issues: None, just off by ones and init errors
 //

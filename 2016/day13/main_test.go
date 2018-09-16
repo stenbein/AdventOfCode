@@ -46,7 +46,6 @@ func ensureOpen(t *testing.T, g *grid, x, y int, expectValue bool) {
 
 }
 
-
 func TestNew(t *testing.T) {
 
 	var g *grid

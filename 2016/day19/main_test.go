@@ -9,7 +9,7 @@ import (
 
 //simple method to print out the grid
 func (e *elf) rep() {
-	
+
 	fmt.Println("Pass")
 
 }
@@ -40,22 +40,21 @@ func ensureLen(t *testing.T, es elves, expectValue int) {
 
 }
 
-
 func expectPanic(t *testing.T, f func()) {
-    defer func() {
-        if r := recover(); r != nil {
-            fmt.Println("Panic recovered: ", r)
-        }
-    }()
-    f()
-    t.Errorf("The code did not panic")
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Panic recovered: ", r)
+		}
+	}()
+	f()
+	t.Errorf("The code did not panic")
 }
 
 func TestTake(t *testing.T) {
 
 	e0 := elf{1, 1}
 	e1 := elf{2, 1}
-	
+
 	e0.take(&e1)
 
 	ensureValue(t, &e0, 2)
@@ -101,7 +100,6 @@ func TestSearch(t *testing.T) {
 
 }
 
-
 func TestReduce(t *testing.T) {
 
 	e0 := elf{1, 1}
@@ -115,8 +113,8 @@ func TestReduce(t *testing.T) {
 
 	es = es.reduce()
 
-	ensureLen(t, es, 4)	
-	
+	ensureLen(t, es, 4)
+
 	e0 = elf{1, 1}
 	e1 = elf{2, 0}
 	e2 = elf{3, 1}
@@ -128,9 +126,9 @@ func TestReduce(t *testing.T) {
 
 	es = es.reduce()
 
-	ensureLen(t, es, 2)	
+	ensureLen(t, es, 2)
 
-		f := func() {
+	f := func() {
 		es.search(2)
 	}
 	expectPanic(t, f)
@@ -139,10 +137,8 @@ func TestReduce(t *testing.T) {
 		es.search(4)
 	}
 	expectPanic(t, f)
-	
 
 }
-
 
 func TestExchange(t *testing.T) {
 
@@ -160,7 +156,6 @@ func TestExchange(t *testing.T) {
 	es.exchange(1, 0)
 	ensureValue(t, &es[1], 2)
 	ensureValue(t, &es[3], 0)
-	
 
 }
 
@@ -168,13 +163,13 @@ func TestAll(t *testing.T) {
 
 	es := newElves(5)
 	ensureIndex(t, process(es, 1), 2)
-	
+
 	es = newElves(8)
 	ensureIndex(t, process(es, 1), 7)
-	
+
 	es = newElves(12)
 	ensureIndex(t, process(es, 1), 3)
-	
+
 	es = newElves(3012210)
 	ensureIndex(t, process(es, 1), -1)
 

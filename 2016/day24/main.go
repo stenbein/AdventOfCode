@@ -3,14 +3,14 @@
 // 		Approach taken was to generate a set of min
 // distances and a set of path permutations and itterate
 // through the path set. To get the shortest path distances
-// I created a second data structure to paint across the 
-// maze with the value of the distances at each step. 
+// I created a second data structure to paint across the
+// maze with the value of the distances at each step.
 // Once the painting was complete you can move to step two
-// and keep track of which path set results in the best 
+// and keep track of which path set results in the best
 // overall distance score.
 //
-// 		Issues: Major issue with memory leak from appending 
-// the same slice was not corrected and I eventually made a 
+// 		Issues: Major issue with memory leak from appending
+// the same slice was not corrected and I eventually made a
 // workaround. Everything else worked well.
 //
 // TODO investigate this. It's some kind of behavior where
@@ -20,40 +20,32 @@
 package main
 
 import (
-
-    "fmt"
-    "strconv"
-    "strings"
-    "io/ioutil"
-    "os"
-
+	"fmt"
+	"io/ioutil"
+	"os"
+	"strconv"
+	"strings"
 )
 
 var depth int
 
 type square struct {
-
-	passable 	bool
-	distance 	int
-	ID 			int
-
+	passable bool
+	distance int
+	ID       int
 }
 
 //represents each square in the maze
 //used to find the shortest paths
 type grid struct {
-
-	squares		[][]square
-	
+	squares [][]square
 }
 
 //matrix represeting distance between paths
 //paths[x][x] == 0, paths[x][y] == paths[y][x]
 type paths struct {
-	
 	distances [][]int
-	IDs []int
-
+	IDs       []int
 }
 
 //simple method to print out the grid
@@ -101,7 +93,7 @@ func (g *grid) reset() {
 
 }
 
-//of the values just painted, check the surroundings and 
+//of the values just painted, check the surroundings and
 //return the coords of the items which can next be painted
 //note this approach is slow, but we only need to call it a few times
 func (g *grid) getNext(tarDist int) ([]int, []int) {
@@ -111,7 +103,7 @@ func (g *grid) getNext(tarDist int) ([]int, []int) {
 
 	min := 0
 	ymax := len(g.squares) - 1
-	xmax := len(g.squares[min])	- 1
+	xmax := len(g.squares[min]) - 1
 
 	//for i, _ := range xs {
 	for i, _ := range g.squares {
@@ -122,39 +114,39 @@ func (g *grid) getNext(tarDist int) ([]int, []int) {
 
 				//one above
 				if i > min {
-					if g.squares[i - 1][j].passable && g.squares[i - 1][j].distance == -1 {
-						yout = append(yout, i - 1)
+					if g.squares[i-1][j].passable && g.squares[i-1][j].distance == -1 {
+						yout = append(yout, i-1)
 						xout = append(xout, j)
 					}
 				}
-				
+
 				//one below
 				if i < ymax {
-					if g.squares[i + 1][j].passable && g.squares[i + 1][j].distance == -1 {
-						yout = append(yout, i + 1)
+					if g.squares[i+1][j].passable && g.squares[i+1][j].distance == -1 {
+						yout = append(yout, i+1)
 						xout = append(xout, j)
 					}
 				}
-				
+
 				//one left
 				if j > min {
-					if g.squares[i][j - 1].passable && g.squares[i][j - 1].distance == -1 {
+					if g.squares[i][j-1].passable && g.squares[i][j-1].distance == -1 {
 						yout = append(yout, i)
-						xout = append(xout, j - 1)
+						xout = append(xout, j-1)
 					}
 				}
-				
+
 				//one right
 				if j < xmax {
-					if g.squares[i][j + 1].passable && g.squares[i][j + 1].distance == -1 {
+					if g.squares[i][j+1].passable && g.squares[i][j+1].distance == -1 {
 						yout = append(yout, i)
-						xout = append(xout, j + 1)
+						xout = append(xout, j+1)
 					}
 				}
 
 			}
 		}
-	
+
 	}
 
 	return xout, yout
@@ -165,15 +157,14 @@ func (g *grid) getNext(tarDist int) ([]int, []int) {
 func (g *grid) paint(xs, ys []int, dis int) {
 
 	for i, _ := range xs {
-		
+
 		if g.squares[ys[i]][xs[i]].distance == -1 {
-			g.squares[ys[i]][xs[i]].distance = dis		
+			g.squares[ys[i]][xs[i]].distance = dis
 		}
-	
+
 	}
 
 }
-
 
 func (g *grid) flood(x, y int) {
 
@@ -181,35 +172,33 @@ func (g *grid) flood(x, y int) {
 	//count := 0
 	xs := []int{x}
 	ys := []int{y}
-	
+
 	for len(xs) > 0 {
-		
+
 		g.paint(xs, ys, dist)
 		xs, ys = g.getNext(dist)
 		dist++
-/*
-		if count > depth {
-			g.rep()
-		}
-		if count > depth + 2 {panic("stop")}
-		count++*/
+		/*
+			if count > depth {
+				g.rep()
+			}
+			if count > depth + 2 {panic("stop")}
+			count++*/
 
-	
 	}
-	
-}
 
+}
 
 func (g *grid) dist(id int) []int {
 
-	out := make([]int, 8) //todo 
+	out := make([]int, 8) //todo
 
 	g.reset()
-	
+
 	//find location of id and flood from there
 	x, y := g.findID(id)
 	g.flood(x, y)
-	
+
 	for y, _ := range g.squares {
 		for x, _ := range g.squares[y] {
 			if g.squares[y][x].ID != -1 {
@@ -227,14 +216,14 @@ func makeGrid(raw string) grid {
 
 	var out grid
 	rows := strings.Split(raw, "\n")
-	
+
 	out.squares = make([][]square, len(rows))
 
 	for i, r := range rows {
-		
+
 		out.squares[i] = make([]square, len(rows[0]))
 		for j, c := range r {
-			
+
 			switch c {
 			case '#':
 				out.squares[i][j] = square{false, -1, -1}
@@ -255,94 +244,93 @@ func makeGrid(raw string) grid {
 func makePaths(raw string) paths {
 
 	var out [][]int
-	
-	IDs := []int{0,1,2,3,4,5,6,7}
+
+	IDs := []int{0, 1, 2, 3, 4, 5, 6, 7}
 	g := makeGrid(raw)
-	
+
 	out = make([][]int, len(IDs))
 
 	for _, id := range IDs {
 		dis := g.dist(id)
 		out[id] = dis
 	}
-	
+
 	return paths{out, IDs}
-	
+
 }
 
 //borrowed a permutation function again
-//the below is really neat. Builds a function 
+//the below is really neat. Builds a function
 //which closes over the result list
 func permutations(arr []int) [][]int {
-    
-    var helper func([]int, int)
-    res := [][]int{}
 
-    helper = func(arr []int, n int){
-        if n == 1{
-            tmp := make([]int, len(arr))
-            copy(tmp, arr)
-            res = append(res, tmp)
-        } else {
-            for i := 0; i < n; i++{
-                helper(arr, n - 1)
-                if n % 2 == 1{
-                    tmp := arr[i]
-                    arr[i] = arr[n - 1]
-                    arr[n - 1] = tmp
-                } else {
-                    tmp := arr[0]
-                    arr[0] = arr[n - 1]
-                    arr[n - 1] = tmp
-                }
-            }
-        }
-    }
+	var helper func([]int, int)
+	res := [][]int{}
 
-    helper(arr, len(arr))
+	helper = func(arr []int, n int) {
+		if n == 1 {
+			tmp := make([]int, len(arr))
+			copy(tmp, arr)
+			res = append(res, tmp)
+		} else {
+			for i := 0; i < n; i++ {
+				helper(arr, n-1)
+				if n%2 == 1 {
+					tmp := arr[i]
+					arr[i] = arr[n-1]
+					arr[n-1] = tmp
+				} else {
+					tmp := arr[0]
+					arr[0] = arr[n-1]
+					arr[n-1] = tmp
+				}
+			}
+		}
+	}
 
-    return res
+	helper(arr, len(arr))
+
+	return res
 
 }
-
 
 //input is a representation of a maze
 //points of interest are integers
 func getIDs(s string) []int {
 
-    out := []int{}
-    for _, r := range s {
-        if r >= '0' && r <= '9' {
-            out = append(out, int(r - '0'))
-        }
-    }
-    return out
+	out := []int{}
+	for _, r := range s {
+		if r >= '0' && r <= '9' {
+			out = append(out, int(r-'0'))
+		}
+	}
+	return out
 }
 
 func distance_one(p *paths, path []int) int {
 
-    i := 0
-    dist := p.distances[0][path[0]] //zero to the first part of the path
-    for i < len(path)-1 {
-        dist += p.distances[path[i]][path[i+1]]
-        i++
-    }
+	i := 0
+	dist := p.distances[0][path[0]] //zero to the first part of the path
+	for i < len(path)-1 {
+		dist += p.distances[path[i]][path[i+1]]
+		i++
+	}
 
-    return dist
+	return dist
 
 }
 
 func distance_two(p *paths, path []int) int {
 
-    i := 0
-    dist := p.distances[0][path[0]] //zero to the first part of the path
-    for i < len(path)-1 {
-        dist += p.distances[path[i]][path[i+1]]
-        i++
-    }
-    dist += p.distances[path[i]][0] //return to zero from end of path
+	i := 0
+	dist := p.distances[0][path[0]] //zero to the first part of the path
+	for i < len(path)-1 {
+		dist += p.distances[path[i]][path[i+1]]
+		i++
+	}
+	dist += p.distances[path[i]][0] //return to zero from end of path
 
-    return dist
+	return dist
 
 }
 
@@ -350,33 +338,33 @@ func distance_two(p *paths, path []int) int {
 //save the shortest and return the distance and path
 func (p *paths) solve(fdistance func(*paths, []int) int) (int, []int) {
 
-    var path, shortest    []int //path is a list of ids to visit in an order
-    var dist, mindist     int
+	var path, shortest []int //path is a list of ids to visit in an order
+	var dist, mindist int
 
-    //init mindist
-    mindist = 9999999
+	//init mindist
+	mindist = 9999999
 
-    //visit each set of paths in order
-    //for _, path = range permutations(p.IDs) {
-    for _, path = range permutations([]int{1,2,3,4,5,6,7}) {
+	//visit each set of paths in order
+	//for _, path = range permutations(p.IDs) {
+	for _, path = range permutations([]int{1, 2, 3, 4, 5, 6, 7}) {
 
-        dist = fdistance(p, path)
-		
-        if dist < mindist {
-            shortest = path
-            mindist = dist
-        }
+		dist = fdistance(p, path)
 
-    }
+		if dist < mindist {
+			shortest = path
+			mindist = dist
+		}
 
-    return mindist, shortest
+	}
+
+	return mindist, shortest
 
 }
 
 func check(e error) {
-    if e != nil {
-        panic(e)
-    }
+	if e != nil {
+		panic(e)
+	}
 }
 
 func part_one(input string) string {
@@ -384,11 +372,11 @@ func part_one(input string) string {
 	p := makePaths(input) //the shortest paths for the maze from each point of interest
 
 	dist, path := p.solve(distance_one)
-	
+
 	fmt.Println(path) //what could it be!?
-	
+
 	return strconv.Itoa(dist)
-	
+
 }
 
 func part_two(input string) string {
@@ -396,9 +384,9 @@ func part_two(input string) string {
 	p := makePaths(input) //the shortest paths for the maze from each point of interest
 
 	dist, path := p.solve(distance_two)
-	
+
 	fmt.Println(path) //what could it be!?
-	
+
 	return strconv.Itoa(dist)
 
 }
@@ -409,7 +397,7 @@ func main() {
 	depth, _ = strconv.Atoi(sdepth)
 
 	input, err := ioutil.ReadFile("./2016_24.txt")
-	
+
 	check(err)
 
 	fmt.Println("Problem 1: " + part_one(string(input)))

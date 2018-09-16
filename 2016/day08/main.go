@@ -29,16 +29,16 @@
 // column A (0 is the left column) down by B pixels. Pixels
 // that would fall off the bottom appear at the top of the
 // column.
-// 
-// 		Part 1: There seems to be an intermediate check of 
+//
+// 		Part 1: There seems to be an intermediate check of
 // the voltage used by the display: after you swipe your card,
 // if the screen did work, how many pixels should be lit?
 //
-//		Part 2: You notice that the screen is only capable 
-// of displaying capital letters; in the font it uses, each 
+//		Part 2: You notice that the screen is only capable
+// of displaying capital letters; in the font it uses, each
 // letter is 5 pixels wide and 6 tall.
 //
-//		After you swipe your card, what code is the screen 
+//		After you swipe your card, what code is the screen
 // trying to display?
 //
 // 		Approach taken was to model the screen as an array of
