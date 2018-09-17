@@ -1,4 +1,4 @@
-inputs = '''kvvfl kvvfl olud wjqsqa olud frc
+kvvfl kvvfl olud wjqsqa olud frc
 slhm rdfm yxb rsobyt rdfm
 pib wzfr xyoakcu zoapeze rtdxt rikc jyeps wdyo hawr xyoakcu hawr
 ismtq qwoi kzt ktgzoc gnxblp dzfayil ftfx asscba ionxi dzfayil qwoi
@@ -509,55 +509,4 @@ mldgn jxovw yuawcvz kzgzwht rxqhzev fsdnvu vluuo eycoh cugf qjugo
 tlnd qcxj ker fdir cgkpo nrqhyq raef uqadf iahy rxx
 mhvisju lhmdbs tcxied xeidtc ujry cditex gvqpqm
 cgc jazrp crgnna uvuokl uvuokl uoiwl sknmc sknmc
-rvbu czwpdit vmlihg spz lfaxxev zslfuto oog dvoksub'''
-
-#Puzzle 1
-valid_count = 0
-for phrase in inputs.split("\n"):
-
-    phrase_tokens = phrase.split()
-    if len(phrase_tokens) == len(set(phrase_tokens)):
-        valid_count += 1
-
-print(valid_count)
-
-#Puzzle 2
-#inputs are sorted strings
-def is_anagram(string1, string2):
-
-    if len(string1) != len(string2):
-        return False
-    else:
-        for index in range(len(string1)):
-            if string1[index] != string2[index]:
-                return False
-        else:
-            return True
-
-valid_count = 0
-for phrase in inputs.split("\n"):
-
-    invalid = False
-    phrase_tokens = phrase.split()
-    sorted_tokens = [''.join(sorted(token)) for token in phrase_tokens]
-    token_count = len(sorted_tokens)
-    for index_one in range(token_count-1):
-        for index_two in range(index_one+1, token_count):
-            if is_anagram(sorted_tokens[index_one], sorted_tokens[index_two]):
-                invalid = True
-                break
-        if invalid:
-            break
-
-    if not invalid:
-        valid_count += 1
-
-print(valid_count)
-
-
-
-
-
-
-
-    
+rvbu czwpdit vmlihg spz lfaxxev zslfuto oog dvoksub
