@@ -1,3 +1,8 @@
 "# AdventOfCode"
 
-Opening a new repo to manage Advent of Code. My first year, 2017 was in python. 2016 is in progress and written in Go. After that I plan to do the 2015 branch in Scala.
+Opening a new repo to manage Advent of Code related resources and to keep track of issues I encounter.
+
+2015 - Scala - in progress
+2016 - Python - completed
+2017 - Go - completed
+2018 - Rust - on hold
