@@ -51,6 +51,6 @@ if __name__ == "__main__":
     with open("input", "r") as file:
 
         RAW = file.read().rstrip()
-    
+
     print(f'Part 1: {part_one(RAW)}')
     print(f'Part 2: {part_two(RAW)}')
